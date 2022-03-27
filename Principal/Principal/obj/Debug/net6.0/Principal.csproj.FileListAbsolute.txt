@@ -1,0 +1,12 @@
+C:\Users\Alex\Desktop\DEVinHouse\Modulo 2\modulo2_projetoAva_1\Principal\Principal\obj\Debug\net6.0\Principal.csproj.AssemblyReference.cache
+C:\Users\Alex\Desktop\DEVinHouse\Modulo 2\modulo2_projetoAva_1\Principal\Principal\obj\Debug\net6.0\Principal.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Alex\Desktop\DEVinHouse\Modulo 2\modulo2_projetoAva_1\Principal\Principal\obj\Debug\net6.0\Principal.AssemblyInfoInputs.cache
+C:\Users\Alex\Desktop\DEVinHouse\Modulo 2\modulo2_projetoAva_1\Principal\Principal\obj\Debug\net6.0\Principal.AssemblyInfo.cs
+C:\Users\Alex\Desktop\DEVinHouse\Modulo 2\modulo2_projetoAva_1\Principal\Principal\obj\Debug\net6.0\Principal.csproj.CoreCompileInputs.cache
+C:\Users\Alex\Desktop\DEVinHouse\Modulo 2\modulo2_projetoAva_1\Principal\Principal\bin\Debug\net6.0\Principal.deps.json
+C:\Users\Alex\Desktop\DEVinHouse\Modulo 2\modulo2_projetoAva_1\Principal\Principal\bin\Debug\net6.0\Principal.dll
+C:\Users\Alex\Desktop\DEVinHouse\Modulo 2\modulo2_projetoAva_1\Principal\Principal\bin\Debug\net6.0\Principal.pdb
+C:\Users\Alex\Desktop\DEVinHouse\Modulo 2\modulo2_projetoAva_1\Principal\Principal\obj\Debug\net6.0\Principal.dll
+C:\Users\Alex\Desktop\DEVinHouse\Modulo 2\modulo2_projetoAva_1\Principal\Principal\obj\Debug\net6.0\refint\Principal.dll
+C:\Users\Alex\Desktop\DEVinHouse\Modulo 2\modulo2_projetoAva_1\Principal\Principal\obj\Debug\net6.0\Principal.pdb
+C:\Users\Alex\Desktop\DEVinHouse\Modulo 2\modulo2_projetoAva_1\Principal\Principal\obj\Debug\net6.0\ref\Principal.dll
