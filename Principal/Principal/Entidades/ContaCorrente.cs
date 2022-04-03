@@ -23,5 +23,11 @@ namespace Principal.Entidades
 
             return saldo + (saldo * Rendimento / 100);
         }
+        public virtual decimal SimularRendimento(int meses, double rentabilidade)
+        {
+            double valordorendimento = meses * rentabilidade;
+
+            return (decimal)valordorendimento;
+        }
     }
 }

@@ -13,15 +13,21 @@ namespace Sistema
     public class AplicacaoFinanceira
     {
         private readonly IMovimentacaoContaInvestimentoRepository _movimentacaoContaInvestimentoRepository;
+        private readonly IMovimentacaoContaCorrenteRepository _movimentacaoContaCorrenteRepository;
+        private readonly IMovimentacaoContaPoupancaRepository _movimentacaoContaPoupancaRepository;
         private readonly IMovimentacaoContaRepository _movimentacaoContaRepository;
         private readonly ICategoriaRepository _categoriaRepository;
 
         public AplicacaoFinanceira(IMovimentacaoContaRepository movimentacaoContaRepository,
                                     IMovimentacaoContaInvestimentoRepository movimentacaoContaInvestimentoRepository,
-                                   ICategoriaRepository categoriaRepository)
+                                    IMovimentacaoContaPoupancaRepository movimentacaoContaPoupancaRepository,
+                                    IMovimentacaoContaCorrenteRepository movimentacaoContaCorrenteRepository,
+                                    ICategoriaRepository categoriaRepository)
         {
             _movimentacaoContaRepository = movimentacaoContaRepository;
             _movimentacaoContaInvestimentoRepository = movimentacaoContaInvestimentoRepository;
+            _movimentacaoContaPoupancaRepository = movimentacaoContaPoupancaRepository;
+            _movimentacaoContaCorrenteRepository = movimentacaoContaCorrenteRepository;
             _categoriaRepository = categoriaRepository;            
         }
 
@@ -40,9 +46,9 @@ namespace Sistema
         {
             Console.WriteLine($"Criando conta corrente numero {numerodaconta}");
 
-            Conta? conta = rendimento > 0 ? new ContaCorrente(id, nome, cpf, endereco, rendamensal, numerodaconta, agencia, saldoinicial, chequeespecial = (rendamensal * 10) / 100, rendimento)
-                                       : new Conta(id, nome, cpf, endereco, rendamensal, numerodaconta, agencia, saldoinicial);
-            _movimentacaoContaRepository.AdicionarElemento(conta);
+            ContaCorrente? conta = new ContaCorrente(id, nome, cpf, endereco, rendamensal, numerodaconta, agencia, saldoinicial, chequeespecial, rendimento);
+                                       
+            _movimentacaoContaCorrenteRepository.AdicionarElemento(conta);
 
             Console.WriteLine($"Conta numero {numerodaconta} criada com sucesso");
         }
@@ -51,8 +57,8 @@ namespace Sistema
         {
             Console.WriteLine($"Criando conta poupança número {numerodaconta}");
 
-            Conta? conta = new ContaPoupanca(id, nome, cpf, endereco, rendamensal, numerodaconta, agencia, saldoinicial);
-            _movimentacaoContaRepository.AdicionarElemento(conta);
+            ContaPoupanca? conta = new ContaPoupanca(id, nome, cpf, endereco, rendamensal, numerodaconta, agencia, saldoinicial);
+            _movimentacaoContaPoupancaRepository.AdicionarElemento(conta);
 
             Console.WriteLine($"Conta poupança número {numerodaconta} criada com sucesso");
         }
@@ -87,25 +93,58 @@ namespace Sistema
 
             Console.WriteLine($"A minha conta investimento {conta.NumeroDaConta} tem o valor simulado de investimento de {valorfinal:N2}");
         }
+        public void SimularRendimentoPoupanca(string id, DateOnly data, int meses, double rentabilidade)
+        {
+            ContaPoupanca? conta = _movimentacaoContaPoupancaRepository.RetornarElemento(id);
+            decimal saldo = _movimentacaoContaPoupancaRepository.RetornarSaldoConta(id, data);
+
+            double rendimento = Convert.ToDouble(saldo) * rentabilidade;
+
+            Console.WriteLine($"A rentabilidade da conta {conta.NumeroDaConta} é de {rendimento}");
+        }
+        public void SimularRendimento(string id, DateOnly data, int meses, double rentabilidade)
+        {
+            ContaCorrente? conta = _movimentacaoContaCorrenteRepository.RetornarElemento(id);
+            decimal saldo = _movimentacaoContaCorrenteRepository.RetornarSaldoConta(id, data);
+
+            double rendimento = Convert.ToDouble(saldo) * rentabilidade;
+
+            Console.WriteLine($"A rentabilidade da conta {conta.NumeroDaConta} é de {rendimento}");
+        }
 
         public void AdicionarTransacaoConta(string id, string descricao, decimal valor, DateOnly data, string categoriaId, string contaId)
         {
             Transacao? transacao = AdicionarTransacaoConta(id, descricao, valor, data, categoriaId);
 
-            _movimentacaoContaRepository.AdicionarTransacao(contaId, transacao);
+            _movimentacaoContaCorrenteRepository.AdicionarTransacao(contaId, transacao);
         }
 
-        public void RetornarSaldoConta(string id, DateOnly data)
+        public void RetornarSaldoContaCorrente(string id, DateOnly data)
         {
-            Conta? conta = _movimentacaoContaRepository.RetornarElemento(id);
-            decimal saldo = _movimentacaoContaRepository.RetornarSaldoConta(id, data);
+            ContaCorrente? conta = _movimentacaoContaCorrenteRepository.RetornarElemento(id);
+            decimal saldo = _movimentacaoContaCorrenteRepository.RetornarSaldoConta(id, data);
 
             Console.WriteLine($"O saldo de minha conta {conta.NumeroDaConta} é de R${saldo:N2}");
         }
 
+        public void RetornarSaldoContaPoupanca(string id, DateOnly data)
+        {
+            ContaPoupanca? conta = _movimentacaoContaPoupancaRepository.RetornarElemento(id);
+            decimal saldo = _movimentacaoContaPoupancaRepository.RetornarSaldoConta(id, data);
+
+            Console.WriteLine($"O saldo de minha conta poupança de número {conta.NumeroDaConta} é de R${saldo:N2}");
+        }
+        public void RetornarSaldoContaInvestimento(string id, DateOnly data)
+        {
+            ContaInvestimento? conta = _movimentacaoContaInvestimentoRepository.RetornarElemento(id);
+            decimal saldo = _movimentacaoContaInvestimentoRepository.RetornarSaldoConta(id, data);
+
+            Console.WriteLine($"O saldo de minha conta poupança de número {conta.NumeroDaConta} é de R${saldo:N2}");
+        }
+
         public void RetornarTransacoesPorCategorias(string contaId, DateOnly data)
         {
-            IEnumerable<Principal.Models.TransacoesPorCategoriaModel>? transacoesPorCategoria = _movimentacaoContaRepository.RetornarTransacoesAgrupadasPorCategorias(contaId, data);
+            IEnumerable<Principal.Models.TransacoesPorCategoriaModel>? transacoesPorCategoria = _movimentacaoContaCorrenteRepository.RetornarTransacoesAgrupadasPorCategorias(contaId, data);
 
             foreach (Principal.Models.TransacoesPorCategoriaModel? transacaoPorCategoria in transacoesPorCategoria)
             {
@@ -129,15 +168,6 @@ namespace Sistema
             Console.WriteLine($"{categoria.TipoCategoria} no valor de R${valor:N2} - Descrição: {descricao} criado com sucesso");
 
             return transacao;
-        }
-        public void SimularRendimento(string id, DateOnly data, int meses, double rentabilidade)
-        {
-            Conta? conta = _movimentacaoContaRepository.RetornarElemento(id);
-            decimal saldo = _movimentacaoContaRepository.RetornarSaldoConta(id, data);
-
-            double rendimento = Convert.ToDouble(saldo) * rentabilidade;
-
-            Console.WriteLine($"A rentabilidade da conta {conta.NumeroDaConta} é de {rendimento}");
-        }
+        }        
     }
 }

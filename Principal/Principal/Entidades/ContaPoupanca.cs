@@ -13,7 +13,7 @@ namespace Principal.Entidades
             AgenciaEnum agencia, decimal saldoinicial)
                       : base(id, nome, cpf, endereco, rendamensal, numerodaconta, agencia, saldoinicial) { }
 
-        public static decimal SimularRendimento(int meses, double rentabilidade)
+        public virtual decimal SimularRendimento(int meses, double rentabilidade)
         {
             double valordorendimento = meses * rentabilidade;
 
